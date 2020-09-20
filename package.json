@@ -1,0 +1,29 @@
+{
+  "name": "naas_proxy",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "server proxy to naas public urls",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CashStory/naas_proxy.git"
+  },
+  "author": "Martin Donadieu",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/CashStory/naas_proxy/issues"
+  },
+  "homepage": "https://github.com/CashStory/naas_proxy#readme",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "eslint": "^7.9.0",
+    "express": "^4.17.1",
+    "express-http-proxy": "^1.6.2",
+    "morgan": "^1.10.0",
+    "object-to-querystring": "^1.0.8",
+    "query-string": "^6.13.2"
+  }
+}
