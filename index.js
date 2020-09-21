@@ -4,9 +4,9 @@ import morgan from 'morgan';
 import axios from 'axios';
 
 const app = express();
-const port = (process.env.PORT || 3002)
+const port = (process.env.PORT || 3002);
 app.set('port', port);
-app.use(morgan('tiny'))
+app.use(morgan('tiny'));
 
 const singleUserPath = process.env.SINGLEUSER_PATH || '.jupyter-single-user.dev.svc.cluster.local';
 const singleUserBase = process.env.SINGLEUSER_BASE || 'http://jupyter-';
@@ -24,16 +24,15 @@ const createUrlBase = (userNameB64) => {
         return `http://${userName}:${singleUserPort}`;
     }
     return `${singleUserBase}${convertJupHost(userName)}${singleUserPath}:${singleUserPort}`;
-}
+};
 
-export const convertProxy = (req, res) => {
+const convertProxy = (req, res) => {
     const { userNameB64, endPointType, token } = req.params;
     if (!userNameB64) {
         res.status(200).json({ error: 'missing username' });
         return Promise.resolve();
     }
     const query = queryString.stringify(req.query || {});
-    console.log('userNameB64', userNameB64);
     let url = createUrlBase(userNameB64);
     if (endPointType) {
         url = `${url}/${endPointType}`;
@@ -42,7 +41,6 @@ export const convertProxy = (req, res) => {
         url = `${url}/${token}`;
     }
     url = `${url}?${query}`;
-    console.log('url', url);
     const responseType = 'stream';
     return axios.request({
         url,
@@ -53,9 +51,7 @@ export const convertProxy = (req, res) => {
             res.set('Content-Type', response.headers['content-type']);
             return response.data.pipe(res);
         })
-        .catch((error) => {
-            return res.status(400).json(error);
-        });
+        .catch((error) => res.status(400).json(error));
 };
 
 const routerProxy = express.Router();
@@ -65,10 +61,10 @@ routerProxy.route('/:userNameB64/:endPointType').get(convertProxy);
 routerProxy.route('/:userNameB64').get(convertProxy);
 
 app.use('/proxy', routerProxy);
-app.get('/', (req, res) => {
-    return res.status(200).json({ status: 'ok' });
-})
+app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
+// eslint-disable-next-line no-console
 console.log('Start server');
 app.listen(app.get('port'), () => {
+    // eslint-disable-next-line no-console
     console.log(`Proxy PID ${process.pid}, port ${app.get('port')}, http://localhost:${app.get('port')}`);
 });
