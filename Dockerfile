@@ -9,7 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.description="proxy server for naas public urls" \
     org.label-schema.url="https://naas.ai" \
     org.label-schema.vcs-ref=$VCS_REF \
-    org.label-schema.vcs-url="https://github.com/Cashstory/nass_proxy" \
+    org.label-schema.vcs-url="https://github.com/jupyter-naas/proxy" \
     org.label-schema.vendor="Cashstory, Inc." \
     org.label-schema.version=$VERSION \
     org.label-schema.schema-version="1.0"
@@ -30,4 +30,4 @@ RUN npm ci
 
 # install server
 COPY index.js /app/index.js
-CMD [ "node", "s/index.js" ]
+CMD [ "node", "app/index.js" ]
