@@ -37,8 +37,6 @@ const convertProxy = (req, res) => {
     }
     url = `${url}?${query}`;
     const responseType = 'stream';
-    // eslint-disable-next-line no-console
-    console.error('url', url);
     return axios.request({
         url,
         method: req.method,
