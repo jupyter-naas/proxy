@@ -2,6 +2,7 @@ import queryString from 'query-string';
 import express from 'express';
 import morgan from 'morgan';
 import axios from 'axios';
+import Base64 from 'js-base64';
 
 const app = express();
 const port = (process.env.PORT || 3002);
@@ -12,18 +13,12 @@ const singleUserPath = process.env.SINGLEUSER_PATH || '.jupyter-single-user.dev.
 const singleUserBase = process.env.SINGLEUSER_BASE || 'http://jupyter-';
 const singleUserPort = process.env.NAAS_PORT || 5000;
 
-const convertJupHost = (userNameB64) => {
-    const b = Buffer.from(userNameB64, 'base64');
-    const s = b.toString();
-    return s;
-};
-
 const createUrlBase = (userNameB64) => {
-    const userName = convertJupHost(userNameB64);
+    const userName = Base64.decode(userNameB64);
     if (userName === 'localhost') {
         return `http://${userName}:${singleUserPort}`;
     }
-    return `${singleUserBase}${convertJupHost(userName)}${singleUserPath}:${singleUserPort}`;
+    return `${singleUserBase}${userName}${singleUserPath}:${singleUserPort}`;
 };
 
 const convertProxy = (req, res) => {
@@ -42,6 +37,8 @@ const convertProxy = (req, res) => {
     }
     url = `${url}?${query}`;
     const responseType = 'stream';
+    // eslint-disable-next-line no-console
+    console.error('url', url);
     return axios.request({
         url,
         method: req.method,
@@ -51,7 +48,7 @@ const convertProxy = (req, res) => {
             res.set('Content-Type', response.headers['content-type']);
             return response.data.pipe(res);
         })
-        .catch((error) => res.status(400).json(error));
+        .catch((error) => res.status(400).json({ error, url }));
 };
 
 const routerProxy = express.Router();
@@ -60,7 +57,7 @@ routerProxy.route('/:userNameB64/:endPointType/:token').get(convertProxy);
 routerProxy.route('/:userNameB64/:endPointType').get(convertProxy);
 routerProxy.route('/:userNameB64').get(convertProxy);
 
-app.use('/proxy', routerProxy);
+app.use('/', routerProxy);
 app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
 // eslint-disable-next-line no-console
 console.log('Start server');
