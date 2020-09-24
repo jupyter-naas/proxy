@@ -5,7 +5,8 @@
   "description": "server proxy to naas public urls",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,12 +19,14 @@
   },
   "homepage": "https://github.com/CashStory/naas_proxy#readme",
   "dependencies": {
+    "@sentry/node": "^5.24.2",
     "axios": "^0.20.0",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
+    "http-error-pages": "^2.0.1",
     "js-base64": "^3.5.2",
     "morgan": "^1.10.0",
     "object-to-querystring": "^1.0.8",

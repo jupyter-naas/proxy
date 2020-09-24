@@ -3,8 +3,20 @@ import express from 'express';
 import morgan from 'morgan';
 import axios from 'axios';
 import Base64 from 'js-base64';
+import httpErrorPages from 'http-error-pages';
+import Sentry from '@sentry/node';
 
 const app = express();
+if (process.env.SENTRY_DSN) {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        tracesSampleRate: 1.0,
+    });
+    app.use(Sentry.Handlers.requestHandler());
+}
+httpErrorPages.express(app, {
+    lang: 'en_US',
+});
 const port = (process.env.PORT || 3002);
 app.set('port', port);
 app.use(morgan('tiny'));
@@ -14,14 +26,14 @@ const singleUserBase = process.env.SINGLEUSER_BASE || 'http://jupyter-';
 const singleUserPort = process.env.NAAS_PORT || 5000;
 
 const createUrlBase = (userNameB64) => {
-    const userName = Base64.decode(userNameB64);
-    if (userName === 'localhost') {
-        return `http://${userName}:${singleUserPort}`;
+    if (userNameB64 === 'localhost') {
+        return `http://${userNameB64}:${singleUserPort}`;
     }
+    const userName = Base64.decode(userNameB64);
     return `${singleUserBase}${userName}${singleUserPath}:${singleUserPort}`;
 };
 
-const convertProxy = (req, res) => {
+const convertProxy = (req, res, next) => {
     const { userNameB64, endPointType, token } = req.params;
     if (!userNameB64) {
         res.status(200).json({ error: 'missing username' });
@@ -46,7 +58,15 @@ const convertProxy = (req, res) => {
             res.set('Content-Type', response.headers['content-type']);
             return response.data.pipe(res);
         })
-        .catch((error) => res.status(400).json({ error, url }));
+        .catch((error) => {
+            if (error.response) {
+                res.set('Content-Type', error.response.headers['content-type']);
+                return error.response.data.pipe(res);
+            }
+            const myError = new Error(error);
+            myError.status = 404;
+            return next(myError);
+        });
 };
 
 const routerProxy = express.Router();
