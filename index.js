@@ -56,11 +56,17 @@ const convertProxy = (req, res, next) => {
     })
         .then((response) => {
             res.set('Content-Type', response.headers['content-type']);
+            if (response.headers['content-disposition']) {
+                res.set('Content-Disposition', response.headers['content-disposition']);
+            }
             return response.data.pipe(res);
         })
         .catch((error) => {
             if (error.response) {
                 res.set('Content-Type', error.response.headers['content-type']);
+                if (error.response.headers['content-disposition']) {
+                    res.set('Content-Disposition', error.response.headers['content-disposition']);
+                }
                 return error.response.data.pipe(res);
             }
             const myError = new Error(error);
