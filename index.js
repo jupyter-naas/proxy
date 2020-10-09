@@ -5,21 +5,27 @@ import axios from 'axios';
 import Base64 from 'js-base64';
 import httpErrorPages from 'http-error-pages';
 import Sentry from '@sentry/node';
+import Tracing from '@sentry/tracing';
 
 const app = express();
-if (process.env.SENTRY_DSN) {
-    Sentry.init({
-        dsn: process.env.SENTRY_DSN,
-        tracesSampleRate: 1.0,
-    });
-    app.use(Sentry.Handlers.requestHandler());
-}
 httpErrorPages.express(app, {
     lang: 'en_US',
 });
 const port = (process.env.PORT || 3002);
 app.set('port', port);
 app.use(morgan('tiny'));
+if (process.env.SENTRY_DSN) {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        integrations: [
+            new Sentry.Integrations.Http({ tracing: true }),
+            new Tracing.Integrations.Express({ app }),
+        ],
+        tracesSampleRate: 1.0,
+    });
+    app.use(Sentry.Handlers.requestHandler());
+    app.use(Sentry.Handlers.tracingHandler());
+}
 
 const singleUserPath = process.env.SINGLEUSER_PATH || '.jupyter-single-user.dev.svc.cluster.local';
 const singleUserBase = process.env.SINGLEUSER_BASE || 'http://jupyter-';
@@ -83,6 +89,9 @@ routerProxy.route('/:userNameB64').get(convertProxy);
 
 app.use('/', routerProxy);
 app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
+if (process.env.SENTRY_DSN) {
+    app.use(Sentry.Handlers.errorHandler());
+}
 // eslint-disable-next-line no-console
 console.log('Start server');
 app.listen(app.get('port'), () => {
