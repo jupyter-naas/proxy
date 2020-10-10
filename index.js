@@ -91,6 +91,8 @@ app.use('/', routerProxy);
 app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());
+    // eslint-disable-next-line no-console
+    console.log('Sentry enabled', process.env.SENTRY_DSN);
 }
 // eslint-disable-next-line no-console
 console.log('Start server');
