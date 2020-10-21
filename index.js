@@ -6,6 +6,7 @@ import Base64 from 'js-base64';
 import httpErrorPages from 'http-error-pages';
 import Sentry from '@sentry/node';
 import Tracing from '@sentry/tracing';
+import * as proxy from 'express-http-proxy';
 
 const app = express();
 httpErrorPages.express(app, {
@@ -61,30 +62,12 @@ const convertProxy = (req, res, next) => {
         responseType,
     })
         .then((response) => {
-            res.set('Content-Type', response.headers['content-type']);
-            if (response.headers['content-disposition']) {
-                res.set('Content-Disposition', response.headers['content-disposition']);
-            }
-            if (response.headers['content-length']) {
-                res.set('Content-Length', response.headers['content-length']);
-            }
-            if (response.headers['content-range']) {
-                res.set('Content-Range', response.headers['content-range']);
-            }
+            res.set(response.headers);
             return response.data.pipe(res);
         })
         .catch((error) => {
             if (error.response) {
-                res.set('Content-Type', error.response.headers['content-type']);
-                if (error.response.headers['content-disposition']) {
-                    res.set('Content-Disposition', error.response.headers['content-disposition']);
-                }
-                if (error.response.headers['content-length']) {
-                    res.set('Content-Length', error.response.headers['content-length']);
-                }
-                if (error.response.headers['content-range']) {
-                    res.set('Content-Range', error.response.headers['content-range']);
-                }
+                res.set(error.response.headers);
                 return error.response.data.pipe(res);
             }
             const myError = new Error(error);
