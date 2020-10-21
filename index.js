@@ -68,6 +68,9 @@ const convertProxy = (req, res, next) => {
             if (response.headers['content-length']) {
                 res.set('Content-Length', response.headers['content-length']);
             }
+            if (response.headers['content-range']) {
+                res.set('Content-Range', response.headers['content-range']);
+            }
             return response.data.pipe(res);
         })
         .catch((error) => {
@@ -78,6 +81,9 @@ const convertProxy = (req, res, next) => {
                 }
                 if (error.response.headers['content-length']) {
                     res.set('Content-Length', error.response.headers['content-length']);
+                }
+                if (error.response.headers['content-range']) {
+                    res.set('Content-Range', error.response.headers['content-range']);
                 }
                 return error.response.data.pipe(res);
             }
