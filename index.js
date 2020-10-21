@@ -65,6 +65,9 @@ const convertProxy = (req, res, next) => {
             if (response.headers['content-disposition']) {
                 res.set('Content-Disposition', response.headers['content-disposition']);
             }
+            if (response.headers['content-length']) {
+                res.set('Content-Length', response.headers['content-length']);
+            }
             return response.data.pipe(res);
         })
         .catch((error) => {
@@ -72,6 +75,9 @@ const convertProxy = (req, res, next) => {
                 res.set('Content-Type', error.response.headers['content-type']);
                 if (error.response.headers['content-disposition']) {
                     res.set('Content-Disposition', error.response.headers['content-disposition']);
+                }
+                if (error.response.headers['content-length']) {
+                    res.set('Content-Length', error.response.headers['content-length']);
                 }
                 return error.response.data.pipe(res);
             }
