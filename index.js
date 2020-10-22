@@ -1,12 +1,11 @@
 import queryString from 'query-string';
 import express from 'express';
 import morgan from 'morgan';
-import axios from 'axios';
 import Base64 from 'js-base64';
 import httpErrorPages from 'http-error-pages';
 import Sentry from '@sentry/node';
 import Tracing from '@sentry/tracing';
-import * as proxy from 'express-http-proxy';
+import proxy from 'express-http-proxy';
 
 const app = express();
 httpErrorPages.express(app, {
@@ -40,7 +39,7 @@ const createUrlBase = (userNameB64) => {
     return `${singleUserBase}${userName}${singleUserPath}:${singleUserPort}`;
 };
 
-const convertProxy = (req, res, next) => {
+const proxyAll = (req, res, next) => {
     const { userNameB64, endPointType, token } = req.params;
     if (!userNameB64) {
         res.status(200).json({ error: 'missing username' });
@@ -54,33 +53,17 @@ const convertProxy = (req, res, next) => {
     if (token) {
         url = `${url}/${token}`;
     }
-    url = `${url}?${query}`;
-    const responseType = 'stream';
-    return axios.request({
-        url,
-        method: req.method,
-        responseType,
-    })
-        .then((response) => {
-            res.set(response.headers);
-            return response.data.pipe(res);
-        })
-        .catch((error) => {
-            if (error.response) {
-                res.set(error.response.headers);
-                return error.response.data.pipe(res);
-            }
-            const myError = new Error(error);
-            myError.status = 404;
-            return next(myError);
-        });
+    url += (query ? `?${query}` : '/');
+    return proxy(url, {
+        preserveHostHdr: true,
+        proxyReqPathResolver: () => url,
+    })(req, res, next);
 };
-
 const routerProxy = express.Router();
 // Proxy
-routerProxy.route('/:userNameB64/:endPointType/:token').get(convertProxy);
-routerProxy.route('/:userNameB64/:endPointType').get(convertProxy);
-routerProxy.route('/:userNameB64').get(convertProxy);
+routerProxy.route('/:userNameB64/:endPointType/:token').get(proxyAll);
+routerProxy.route('/:userNameB64/:endPointType').get(proxyAll);
+routerProxy.route('/:userNameB64').get(proxyAll);
 
 app.use('/', routerProxy);
 app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
