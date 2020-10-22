@@ -12,6 +12,7 @@ httpErrorPages.express(app, {
     lang: 'en_US',
 });
 const port = (process.env.PORT || 3002);
+app.disable('x-powered-by');
 app.set('port', port);
 app.use(morgan('tiny'));
 if (process.env.SENTRY_DSN) {
