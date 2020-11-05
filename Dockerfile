@@ -30,4 +30,4 @@ RUN npm ci
 
 # install server
 COPY index.js /app/index.js
-CMD [ "node", "index.js" ]
+CMD [ "node", "--es-module-specifier-resolution=node", "src/index" ]

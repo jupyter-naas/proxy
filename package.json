@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "./test_proxy.sh"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/CashStory/naas_proxy#readme",
   "dependencies": {
+    "@greenlock/store-sequelize": "^3.0.3",
+    "@root/greenlock": "^3.1.5",
     "@sentry/node": "^5.25.0",
     "@sentry/tracing": "^5.25.0",
     "axios": "^0.20.0",
@@ -35,7 +37,10 @@
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
     "query-string": "^6.13.2",
-    "sequelize": "^6.3.5",
+    "sequelize": "^5.22.2",
     "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
