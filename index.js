@@ -14,7 +14,7 @@ const uri = process.env.PROXY_DB;
 let sequelize;
 
 if (uri) {
-    sequelize = new seq.Sequelize(uri);
+    sequelize = new seq.Sequelize(uri, { logging: false });
 } else {
     sequelize = new seq.Sequelize({
         dialect: 'sqlite',
@@ -218,15 +218,14 @@ if (process.env.SENTRY_DSN) {
 // eslint-disable-next-line no-console
 console.log('Start server');
 app.listen(app.get('port'), () => {
-    // eslint-disable-next-line no-console
-    console.log(`Proxy PID ${process.pid}, port ${app.get('port')}, http://localhost:${app.get('port')}`);
-});
-
-sequelize.authenticate().then(async () => {
-    await Domain.sync();
-    // eslint-disable-next-line no-console
-    console.log('Connection has been established successfully.');
-}).catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error('Unable to connect to the database:', error);
+    sequelize.authenticate().then(async () => {
+        await Domain.sync();
+        // eslint-disable-next-line no-console
+        console.log('Connection has been established successfully.');
+        // eslint-disable-next-line no-console
+        console.log(`Proxy PID ${process.pid}, port ${app.get('port')}, http://localhost:${app.get('port')}`);
+    }).catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Unable to connect to the database:', error);
+    });
 });
