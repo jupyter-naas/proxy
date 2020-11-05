@@ -105,8 +105,8 @@ const proxyAll = (req, res, next) => {
         const data = hostToUser(req.hostname, userNameB64, endPointType);
         if (data) {
             userName = data.email;
-            token = data.token ? data.token : token;
-            endPointType = data.endPointType ? data.endPointType : endPointType;
+            token = token || data.token;
+            endPointType = endPointType || data.endPointType;
         } else {
             return res.status(400).json({ error: 'domain not found' });
         }
