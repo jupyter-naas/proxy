@@ -32,9 +32,11 @@ const genereateCertif = async (domain) => {
     // eslint-disable-next-line no-console
     console.log('genereateCertif', domain);
     try {
-        const result = await greenlock.create({
+        const result = await greenlock.add({
             subject: domain,
+            altnames: [domain],
         });
+        console.log('result', result);
         return result;
     } catch (err) {
     // eslint-disable-next-line no-console
@@ -49,6 +51,7 @@ const deleteCertif = async (domain) => {
         await greenlock.remove({
             subject: domain,
         });
+        console.log('removed');
         return true;
     } catch (err) {
     // eslint-disable-next-line no-console
@@ -91,7 +94,7 @@ export const createMainSsl = async () => {
     await Ssl.sync();
     const ssl = await Ssl.findOne({
         where: {
-            naasProxyHost,
+            domain: naasProxyHost,
         },
     });
     if (!ssl) {

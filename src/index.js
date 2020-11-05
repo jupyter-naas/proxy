@@ -49,22 +49,28 @@ console.log('Start server');
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(optionsSsl, app);
 
-httpServer.listen(app.get('port'), () => {
-    Sequelize.authenticate().then(async () => {
+httpServer.listen(app.get('port'), async () => {
+    try {
+        await Sequelize.authenticate();
         await Domain.sync();
         // eslint-disable-next-line no-console
         console.log('Connection has been established successfully.');
         // eslint-disable-next-line no-console
         console.log(`Proxy PID ${process.pid}, port ${app.get('port')}, http://localhost:${app.get('port')}`);
-    }).catch((error) => {
+    } catch (err) {
         // eslint-disable-next-line no-console
-        console.error('Unable to connect to the database:', error);
-    });
+        console.error('Unable to connect to the database:', err);
+    }
 });
 if (SSL) {
     httpsServer.listen(443, async () => {
-        await createMainSsl();
+        try {
+            await createMainSsl();
+            // eslint-disable-next-line no-console
+            console.log(`Proxy https on https://${naasProxyHost}}`);
+        } catch (err) {
         // eslint-disable-next-line no-console
-        console.log(`Proxy https on https://${naasProxyHost}}`);
+            console.error('Unable to create main Ssl', err);
+        }
     });
 }

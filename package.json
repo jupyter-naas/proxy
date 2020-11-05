@@ -30,6 +30,7 @@
     "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
+    "greenlock-express": "^3.1.1",
     "http-error-pages": "^2.0.1",
     "js-base64": "^3.5.2",
     "morgan": "^1.10.0",
