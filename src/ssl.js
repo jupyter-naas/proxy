@@ -1,19 +1,11 @@
-import Greenlock from '@root/greenlock';
-import GreenlockStore from '@greenlock/store-sequelize';
 import tls from 'tls';
+import certbot from './cerbot';
 import {
     Ssl,
-    Sequelize,
 } from './db';
 
 export const naasProxyHost = process.env.NAAS_PROXY_HOST || 'public.naas.ai';
 const naasMainainer = process.env.NAAS_MAINTAINER || 'devops@cashstory.com';
-
-const greenlock = Greenlock.create({
-    store: GreenlockStore.create({ db: Sequelize }),
-    maintainerEmail: naasMainainer,
-    staging: true,
-});
 
 async function getSecureContexts(serverName) {
     const result = await Ssl.findAll({
@@ -32,10 +24,7 @@ const genereateCertif = async (domain) => {
     // eslint-disable-next-line no-console
     console.log('genereateCertif', domain);
     try {
-        const result = await greenlock.add({
-            subject: domain,
-            altnames: [domain],
-        });
+        const result = certbot.add(naasMainainer, domain);
         console.log('result', result);
         return result;
     } catch (err) {
@@ -48,9 +37,7 @@ const deleteCertif = async (domain) => {
     // eslint-disable-next-line no-console
     console.log('deleteCertif', domain);
     try {
-        await greenlock.remove({
-            subject: domain,
-        });
+        certbot.delete(naasMainainer, domain);
         console.log('removed');
         return true;
     } catch (err) {

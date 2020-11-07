@@ -47,7 +47,6 @@ if (process.env.SENTRY_DSN) {
 // eslint-disable-next-line no-console
 console.log('Start server');
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(optionsSsl, app);
 
 httpServer.listen(app.get('port'), async () => {
     try {
@@ -63,6 +62,8 @@ httpServer.listen(app.get('port'), async () => {
     }
 });
 if (SSL) {
+    const httpsServer = https.createServer(optionsSsl, app);
+    app.use('/.well-known', express.static('/certbot/www/.well-known'));
     httpsServer.listen(443, async () => {
         try {
             await createMainSsl();

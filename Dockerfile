@@ -19,7 +19,7 @@ ENV NODE_ENV production
 ENV TZ Europe/Paris
 
 # Install tzdata for cron job
-RUN apk add --no-cache git tzdata && rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
+RUN apk add --no-cache git tzdata certbot && rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 RUN mkdir -p /app
 WORKDIR /app
