@@ -15,14 +15,10 @@ import {
 } from './ssl';
 
 const app = express();
-httpErrorPages.express(app, {
-    lang: 'en_US',
-});
 const { SSL } = process.env;
 const port = (process.env.PORT || 3002);
 app.disable('x-powered-by');
 app.set('port', port);
-app.use(morgan('tiny'));
 if (process.env.SENTRY_DSN) {
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
@@ -35,7 +31,16 @@ if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.requestHandler());
     app.use(Sentry.Handlers.tracingHandler());
 }
-
+app.use(morgan('tiny'));
+const logErrors = (err, req, res, next) => {
+    // eslint-disable-next-line no-console
+    console.error(err.stack);
+    next(err);
+};
+app.use(logErrors);
+httpErrorPages.express(app, {
+    lang: 'en_US',
+});
 app.use('/proxy', RouterProxyApi);
 app.use('/', RouterProxy);
 // app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));

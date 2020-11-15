@@ -56,7 +56,6 @@ const routerProxy = express.Router();
 routerProxy.route('/:userNameB64/:endPointType/:token').post(proxyAll);
 routerProxy.route('/:userNameB64/:endPointType/:token').get(proxyAll);
 routerProxy.route('/:userNameB64/:endPointType').get(proxyAll);
-routerProxy.route('/:userNameB64').get(proxyAll);
 routerProxy.route('/').get(proxyAll);
 
 export default routerProxy;
