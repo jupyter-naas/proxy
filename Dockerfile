@@ -29,5 +29,5 @@ COPY package*.json /app/
 RUN npm ci
 
 # install server
-COPY index.js /app/index.js
+COPY src /app/src
 CMD [ "node", "--es-module-specifier-resolution=node", "src/index" ]
