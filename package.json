@@ -32,7 +32,7 @@
     "express-http-proxy": "^1.6.2",
     "greenlock-express": "^3.1.1",
     "http-error-pages": "^2.0.1",
-    "js-base64": "^3.5.2",
+    "js-base64": "^3.6.0",
     "morgan": "^1.10.0",
     "object-to-querystring": "^1.0.8",
     "pg": "^8.4.2",
