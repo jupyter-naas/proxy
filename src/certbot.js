@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 
-class certbot {
+class Certbot {
     constructor() {
         this.ash = exec;
 
@@ -94,4 +94,4 @@ class certbot {
     }
 }
 
-export default certbot();
+export default new Certbot();
