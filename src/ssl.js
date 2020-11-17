@@ -1,5 +1,5 @@
 import tls from 'tls';
-import certbot from './cerbot';
+import certbot from './certbot';
 import {
     Ssl,
 } from './db';
