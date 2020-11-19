@@ -51,8 +51,14 @@ const proxyAll = (req, res, next) => {
         proxyReqPathResolver: () => url,
     })(req, res, next);
 };
+const respondFav = (req, res) => {
+    const path = `${process.cwd()}/src/images/naas_fav.svg`;
+    res.sendFile(path);
+};
+
 const routerProxy = express.Router();
 
+routerProxy.route('/favicon.ico').get(respondFav);
 routerProxy.route('/:userNameB64/:endPointType/:token').post(proxyAll);
 routerProxy.route('/:userNameB64/:endPointType/:token').get(proxyAll);
 routerProxy.route('/:userNameB64/:endPointType').get(proxyAll);

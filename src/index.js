@@ -1,4 +1,5 @@
 import httpErrorPages from 'http-error-pages';
+import errorHandler from 'express-error-log-handler';
 import Sentry from '@sentry/node';
 import Tracing from '@sentry/tracing';
 import express from 'express';
@@ -32,23 +33,20 @@ if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.tracingHandler());
 }
 app.use(morgan('tiny'));
-const logErrors = (err, req, res, next) => {
-    // eslint-disable-next-line no-console
-    console.error(err.stack);
-    next(err);
-};
-app.use(logErrors);
-httpErrorPages.express(app, {
-    lang: 'en_US',
-});
 app.use('/proxy', RouterProxyApi);
 app.use('/', RouterProxy);
-// app.get('/', (req, res) => res.status(200).json({ status: 'ok' }));
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());
     // eslint-disable-next-line no-console
     console.log('Sentry enabled', process.env.SENTRY_DSN);
 }
+app.use(errorHandler((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err);
+}));
+httpErrorPages.express(app, {
+    lang: 'en_US',
+});
 // eslint-disable-next-line no-console
 console.log('Start server');
 const httpServer = http.createServer(app);

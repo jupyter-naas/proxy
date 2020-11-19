@@ -13,12 +13,12 @@ const jsonParser = bodyParser.json();
 const hubHost = process.env.HUB_HOST || 'app.naas.ai';
 
 export const hostToUser = async (domain, token = null, endPointType = null) => {
-    const query = { domain };
+    const query = { where: { domain } };
     if (token) {
-        query.token = token;
+        query.where.token = token;
     }
     if (endPointType) {
-        query.endPointType = endPointType;
+        query.where.endPointType = endPointType;
     }
     const result = await Domain.findOne(query);
     return result;
