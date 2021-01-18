@@ -34,6 +34,7 @@ if (process.env.SENTRY_DSN) {
 }
 app.use(morgan('tiny'));
 app.use('/proxy', RouterProxyApi);
+app.use('/runner', RouterProxyApi);
 app.use('/', RouterProxy);
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());

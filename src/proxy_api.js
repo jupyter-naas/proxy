@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import axios from 'axios';
+import authToHub from './auth';
+
 import {
     Domain,
 } from './db';
@@ -10,7 +11,6 @@ import {
 } from './ssl';
 
 const jsonParser = bodyParser.json();
-const hubHost = process.env.HUB_HOST || 'app.naas.ai';
 
 export const hostToUser = async (domain, token = null, endPointType = null) => {
     const query = { where: { domain } };
@@ -23,24 +23,7 @@ export const hostToUser = async (domain, token = null, endPointType = null) => {
     const result = await Domain.findOne(query);
     return result;
 };
-const authToHub = async (req, res, next) => {
-    try {
-        const options = {
-            headers: {
-                'content-type': 'application/json',
-                authorization: req.headers.authorization,
-            },
-        };
-        const result = await axios.get(`https://${hubHost}/hub/api/user`, options);
-        if (!result || !result.data || !result.data.name) {
-            throw Error('User not found');
-        }
-        req.auth = { email: result.data.name };
-        return next();
-    } catch (err) {
-        return res.status(500).send(err);
-    }
-};
+
 const proxySet = async (req, res) => {
     const { email } = req.auth;
     const { domain, token, endPointType } = req.body;
