@@ -1,3 +1,9 @@
+## 1.1.4 (2021-01-27)
+
+### Fix
+
+- domain url + renamve db env var
+
 ## 1.1.3 (2021-01-19)
 
 ### Fix
