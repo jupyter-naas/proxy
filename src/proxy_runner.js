@@ -41,7 +41,7 @@ const proxyAll = (req, res, next) => {
     const query = queryString.stringify(req.query || {});
     let url = createUrlBase(userName);
     if (endPointType) {
-        url = `${url}/${req.url}`;
+        url = `${url}/${endPointType}`;
     }
     if (token) {
         url = `${url}/${token}`;
@@ -55,6 +55,6 @@ const proxyAll = (req, res, next) => {
 
 const routerRunner = express.Router();
 
-routerRunner.route('*').all(authToHub, proxyAll);
+routerRunner.route('/:userNameB64/:endPointType/:token').all(authToHub, proxyAll);
 
 export default routerRunner;

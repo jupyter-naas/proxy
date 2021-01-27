@@ -1,6 +1,6 @@
 import sequelize from 'sequelize';
 
-const uri = process.env.PROXY_DB;
+const uri = process.env.HUB_DB;
 let sql;
 
 if (uri) {
