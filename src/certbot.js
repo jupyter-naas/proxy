@@ -65,7 +65,7 @@ class Certbot {
 
     add(email, domain) {
         const domainname = domain.replace('.', '_');
-        const cmd = `certonly --cert-name "${domain}" --non-interactive --agree-tos --email "${email}" --keep --webroot -w ${this.etc.path.challenge} ${domain}`;
+        const cmd = `certonly --cert-name "${domain}" --non-interactive --agree-tos --email "${email}" --keep --webroot -w ${this.etc.path.challenge} "${domain}"`;
 
         try {
             this.shell(`${this.etc.cmd} --rsa-key-size 4096 ${cmd}`);
