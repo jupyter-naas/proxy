@@ -1,3 +1,13 @@
+## 1.2.0 (2021-03-18)
+
+### Feat
+
+- make main ssl optionnal
+
+### Fix
+
+- remove create cert for main certif
+
 ## 1.1.7 (2021-03-18)
 
 ### Fix
