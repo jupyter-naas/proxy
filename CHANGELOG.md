@@ -1,3 +1,9 @@
+## 1.1.8 (2021-03-18)
+
+### Fix
+
+- remove create cert for main certif
+
 ## 1.1.7 (2021-03-18)
 
 ### Fix
