@@ -35,6 +35,9 @@ if (process.env.SENTRY_DSN) {
 app.use(morgan('tiny'));
 app.use('/proxy', RouterProxyApi);
 app.use('/runner', RouterProxyApi);
+if (SSL) {
+    app.use('/.well-known', express.static('/certbot/www/.well-known'));
+}
 app.use('/', RouterProxy);
 if (process.env.SENTRY_DSN) {
     app.use(Sentry.Handlers.errorHandler());
@@ -67,7 +70,6 @@ httpServer.listen(app.get('port'), async () => {
 });
 if (SSL) {
     const httpsServer = https.createServer(optionsSsl, app);
-    app.use('/.well-known', express.static('/certbot/www/.well-known'));
     httpsServer.listen(443, async () => {
         if (process.env.MAIN_SSL) {
             try {
