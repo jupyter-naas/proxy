@@ -12,7 +12,7 @@ import {
     Domain, Sequelize,
 } from './db';
 import {
-    optionsSsl, naasProxyHost,
+    optionsSsl, createMainSsl, naasProxyHost,
 } from './ssl';
 
 const app = express();
@@ -69,13 +69,15 @@ if (SSL) {
     const httpsServer = https.createServer(optionsSsl, app);
     app.use('/.well-known', express.static('/certbot/www/.well-known'));
     httpsServer.listen(443, async () => {
-        try {
-            // await createMainSsl();
+        if (process.env.MAIN_SSL) {
+            try {
+                await createMainSsl();
+                // eslint-disable-next-line no-console
+                console.log(`Proxy https on https://${naasProxyHost}}`);
+            } catch (err) {
             // eslint-disable-next-line no-console
-            console.log(`Proxy https on https://${naasProxyHost}}`);
-        } catch (err) {
-        // eslint-disable-next-line no-console
-            console.error('Unable to create main Ssl', err);
+                console.error('Unable to create main Ssl', err);
+            }
         }
     });
 }
