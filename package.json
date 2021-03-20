@@ -39,7 +39,7 @@
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
     "query-string": "^6.13.2",
-    "sequelize": "^6.3.5",
+    "sequelize": "^6.5.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
