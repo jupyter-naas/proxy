@@ -26,7 +26,7 @@
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "eslint": "^7.9.0",
-    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
     "express-error-log-handler": "^1.0.0",
@@ -38,7 +38,7 @@
     "object-to-querystring": "^1.0.8",
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
-    "query-string": "^6.13.2",
+    "query-string": "^7.0.0",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
   },
