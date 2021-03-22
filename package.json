@@ -38,7 +38,7 @@
     "object-to-querystring": "^1.0.8",
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
-    "query-string": "^6.13.2",
+    "query-string": "^7.0.0",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
   },
