@@ -22,6 +22,7 @@ ENV TZ Europe/Paris
 RUN apk add --no-cache git tzdata certbot && rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 RUN mkdir -p /app
+RUN mkdir /certbot && mkdir /certbot/www
 WORKDIR /app
 
 # install dependency

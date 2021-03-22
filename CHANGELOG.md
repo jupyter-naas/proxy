@@ -1,3 +1,52 @@
+## 1.2.1 (2021-03-19)
+
+### Fix
+
+- try todal revert
+- try to remove file
+- deploy
+- order declaration
+
+## 1.2.0 (2021-03-18)
+
+### Feat
+
+- make main ssl optionnal
+
+### Fix
+
+- remove create cert for main certif
+
+## 1.1.7 (2021-03-18)
+
+### Fix
+
+- command line
+
+## 1.1.6 (2021-03-18)
+
+### Fix
+
+- certbot command
+
+## 1.1.5 (2021-03-18)
+
+### Fix
+
+- missing folders
+
+## 1.1.4 (2021-01-27)
+
+### Fix
+
+- domain url + renamve db env var
+
+## 1.1.3 (2021-01-19)
+
+### Fix
+
+- remove changelog for now
+
 ## 1.1.3b0 (2020-11-19)
 
 ### Fix

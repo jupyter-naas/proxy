@@ -17,4 +17,4 @@ set this env vars to make it work
 
 `HUB_HOST` => hostname of the deployed jupyter hub instance
 
-`PROXY_DB` => 'sqlite::memory:' or postgressuri 'postgres://user:pass@example.com:5432/dbname'
+`HUB_DB` => 'sqlite::memory:' or postgressuri 'postgres://user:pass@example.com:5432/dbname'
