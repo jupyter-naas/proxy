@@ -13,6 +13,10 @@ set this env vars to make it work
 
 `PORT` => to set the proxy port
 
+`SSL` => to set Set this if you want the proxy to create ssl for managed domain for users
+
+`MAIN_SSL` => Set this if you want the proxy to create ssl for main domain too
+
 `NAAS_PROXY_HOST` => hostname of this deployed proxy
 
 `HUB_HOST` => hostname of the deployed jupyter hub instance
