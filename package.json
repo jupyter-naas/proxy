@@ -21,7 +21,7 @@
   "dependencies": {
     "@greenlock/store-sequelize": "^3.0.3",
     "@root/greenlock": "^3.1.5",
-    "@sentry/node": "^5.25.0",
+    "@sentry/node": "^6.2.3",
     "@sentry/tracing": "^5.25.0",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
@@ -32,7 +32,7 @@
     "express-error-log-handler": "^1.0.0",
     "express-http-proxy": "^1.6.2",
     "greenlock-express": "^4.0.3",
-    "http-error-pages": "^2.0.1",
+    "http-error-pages": "^3.1.0",
     "js-base64": "^3.6.0",
     "morgan": "^1.10.0",
     "object-to-querystring": "^1.0.8",
@@ -43,6 +43,6 @@
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.7"
   }
 }
