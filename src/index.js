@@ -1,5 +1,5 @@
 import httpErrorPages from 'http-error-pages';
-import errorHandler from 'express-error-log-handler';
+// import errorHandler from 'express-error-log-handler';
 import Sentry from '@sentry/node';
 import Tracing from '@sentry/tracing';
 import express from 'express';
@@ -44,10 +44,15 @@ if (process.env.SENTRY_DSN) {
     // eslint-disable-next-line no-console
     console.log('Sentry enabled', process.env.SENTRY_DSN);
 }
-app.use(errorHandler((err) => {
-    // eslint-disable-next-line no-console
-    console.log(err);
-}));
+// app.use(errorHandler((err) => {
+//     // eslint-disable-next-line no-console
+//     console.log(err);
+// }));
+app.use((err, req, res, next) => {
+    console.log(`[custom logging middleware] ${err.message}`);
+    // forward error
+    next(err);
+});
 httpErrorPages.express(app, {
     lang: 'en_US',
 });
