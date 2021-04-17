@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import express from 'express';
 import authToHub from './auth';
 
@@ -10,7 +9,7 @@ import {
     deleteSsl,
 } from './ssl';
 
-const jsonParser = bodyParser.json();
+const jsonParser = express.json();
 
 export const hostToUser = async (domain, token = null, endPointType = null) => {
     const query = { where: { domain } };

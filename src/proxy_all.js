@@ -5,10 +5,11 @@ import express from 'express';
 import { hostToUser } from './proxy_api';
 import { naasProxyHost } from './ssl';
 
-const singleUserPath = process.env.SINGLEUSER_PATH || '.jupyter-single-user.dev.svc.cluster.local';
-const singleUserBase = process.env.SINGLEUSER_BASE || 'http://jupyter-';
+const singleUserPath = typeof process.env.SINGLEUSER_PATH !== 'undefined' ? process.env.SINGLEUSER_PATH : '.jupyter-single-user.dev.svc.cluster.local';
+const singleUserBase = typeof process.env.SINGLEUSER_BASE !== 'undefined' ? process.env.SINGLEUSER_BASE : 'http://jupyter-';
 const singleUserPort = process.env.NAAS_PORT || 5000;
 
+const { SSL } = process.env;
 const decodeUser = (userNameB64) => {
     if (userNameB64 === 'localhost') {
         return `http://${userNameB64}:${singleUserPort}`;
@@ -21,7 +22,7 @@ const proxyAll = (req, res, next) => {
     const { userNameB64 } = req.params;
     let { endPointType, token } = req.params;
     let userName = null;
-    if (req.hostname !== naasProxyHost) {
+    if (SSL && req.hostname !== naasProxyHost) {
         const data = hostToUser(req.hostname, userNameB64, endPointType);
         if (data) {
             userName = data.email;
