@@ -20,7 +20,7 @@
   "homepage": "https://github.com/CashStory/naas_proxy#readme",
   "dependencies": {
     "@greenlock/store-sequelize": "^3.0.3",
-    "@root/greenlock": "^3.1.5",
+    "@root/greenlock": "^4.0.5",
     "@sentry/node": "^6.2.3",
     "@sentry/tracing": "^5.25.0",
     "axios": "^0.21.1",
