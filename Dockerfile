@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:14.17.6-alpine3.11
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
