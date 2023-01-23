@@ -22,7 +22,7 @@
     "@greenlock/store-sequelize": "^3.0.3",
     "@root/greenlock": "^3.1.5",
     "@sentry/node": "^6.2.3",
-    "@sentry/tracing": "^5.25.0",
+    "@sentry/tracing": "^7.32.1",
     "axios": "^0.21.1",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-base": "^14.2.1",
